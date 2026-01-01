@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Türk Lezzetleri • 3 Bölümlü Proje</title>
+
+<style>
+:root{
+  --bg1:#fff7ed;
+  --bg2:#ffedd5;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --brand:#f97316;
+  --brandDark:#c2410c;
+  --accent:#22c55e;
+  --shadow:0 10px 28px rgba(0,0,0,.10);
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:linear-gradient(180deg,var(--bg1),var(--bg2));
+  color:var(--text);
+}
+a{color:inherit}
+.container{max-width:1100px;margin:0 auto;padding:18px}
+.topbar{
+  position:sticky; top:0; z-index:10;
+  backdrop-filter: blur(10px);
+  background:rgba(255,247,237,.75);
+  border-bottom:1px solid rgba(229,231,235,.8);
+}
+.topbar-inner{
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+}
+.brand{
+  font-weight:900; text-decoration:none;
+  color:var(--brandDark);
+  font-size:18px;
+  display:flex; align-items:center; gap:10px;
+}
+.nav{display:flex; gap:8px; flex-wrap:wrap}
+.nav a{
+  text-decoration:none;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid transparent;
+  font-weight:800;
+  color:#1f2937;
+}
+.nav a:hover{border-color:#fed7aa;background:#fff}
+.nav a.active{background:rgba(249,115,22,.12); border-color:#fdba74; color:var(--brandDark)}
+.badge{
+  font-size:12px;
+  font-weight:900;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#fff7ed;
+  color:var(--brandDark);
+  border:1px solid #fed7aa;
+}
+.section{margin:18px 0 28px}
+.section-head{
+  display:flex; align-items:flex-end; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  margin-bottom:12px;
+}
+.section-head h1,.section-head h2{margin:0;color:var(--brandDark)}
+.section-head p{margin:0;color:var(--muted);font-weight:600}
+.hero{
+  display:grid; grid-template-columns: 1.35fr .65fr; gap:16px;
+  margin-top:8px;
+}
+@media (max-width:900px){.hero{grid-template-columns:1fr}}
+.hero-card{
+  background:var(--card);
+  border:1px solid rgba(229,231,235,.9);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:18px;
+}
+.hero-card h1{margin:0 0 8px;font-size:28px;line-height:1.1;color:var(--brandDark)}
+.hero-card p{margin:0 0 14px;color:#374151;font-weight:600;line-height:1.6}
+.hero-actions{display:flex; gap:10px; flex-wrap:wrap}
+.btn{
+  border:none; cursor:pointer; text-decoration:none;
+  padding:12px 14px; border-radius:14px;
+  font-weight:900; display:inline-flex; align-items:center; gap:10px;
+  background:var(--brand); color:#fff;
+  box-shadow:0 8px 16px rgba(249,115,22,.25);
+}
+.btn:hover{filter:brightness(.98)}
+.btn-ghost{
+  background:#fff;
+  color:#111827;
+  border:1px solid var(--border);
+  box-shadow:none;
+}
+.stats{display:grid; gap:12px}
+.stat{
+  background:rgba(255,255,255,.85);
+  border:1px solid rgba(229,231,235,.9);
+  border-radius:var(--radius);
+  padding:14px;
+  box-shadow:0 10px 20px rgba(0,0,0,.06);
+}
+.stat .num{font-size:22px;font-weight:1000;color:var(--brandDark)}
+.stat .label{color:var(--muted);font-weight:800;margin-top:4px}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
+}
+.card{
+  background:var(--card);
+  border:1px solid rgba(229,231,235,.9);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  transition:.2s;
+  cursor:pointer;
+}
+.card:hover{transform:translateY(-5px)}
+.card img{width:100%; height:165px; object-fit:cover; display:block}
+.card-body{padding:14px}
+.card-title{margin:0;color:var(--brandDark);font-weight:1000;font-size:18px}
+.card-meta{margin-top:10px; display:flex; gap:8px; flex-wrap:wrap}
+.card-desc{margin-top:10px; color:var(--muted); font-weight:650; line-height:1.45; font-size:13px}
+
+.controls{
+  display:flex; gap:10px; flex-wrap:wrap;
+  background:rgba(255,255,255,.75);
+  border:1px solid rgba(229,231,235,.9);
+  border-radius:var(--radius);
+  padding:12px;
+  box-shadow:0 10px 20px rgba(0,0,0,.06);
+}
+.input,.select{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px 12px;
+  font-weight:800;
+  background:#fff;
+  outline:none;
+}
+.input{flex:1; min-width:210px}
+.select{min-width:210px}
+.small-note{color:var(--muted); font-weight:700; margin-top:10px}
+
+/* İLETİŞİM SAYFASI KARTLARI */
+.contact{
+  background:rgba(255,255,255,.9);
+  border:1px solid rgba(229,231,235,.9);
+  border-radius:var(--radius);
+  padding:16px;
+  box-shadow:var(--shadow);
+}
+.contact-grid{
+  display:grid; grid-template-columns: 1.1fr .9fr; gap:14px;
+}
+@media (max-width:900px){.contact-grid{grid-template-columns:1fr}}
+.contact-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:14px;
+}
+.contact-card h3{margin:0 0 10px;color:var(--accent)}
+.contact-card p{margin:8px 0;color:#374151;font-weight:650;line-height:1.6}
+.social{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+.social a{
+  text-decoration:none; font-weight:1000; font-size:13px;
+  padding:10px 12px; border-radius:14px;
+  border:1px solid var(--border);
+  background:#fff;
+}
+.social a:hover{border-color:#fdba74;background:#fff7ed}
+.map{width:100%; height:330px; border:0; border-radius:var(--radius); background:#fff}
+
+.view{display:none}
+.view.active{display:block}
+
+.footer{
+  margin-top:24px;
+  border-top:1px solid rgba(229,231,235,.8);
+  background:rgba(255,255,255,.65);
+}
+.footer-inner{
+  display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;
+  padding:14px 18px;
+  color:#9ca3af;
+  font-weight:900;
+}
+.muted{color:var(--muted)}
+.preline{white-space:pre-line}
+hr.sep{border:none;border-top:1px solid rgba(229,231,235,.9); margin:14px 0}
+
+/* MODAL */
+.modal{position:fixed; inset:0; display:none; z-index:50}
+.modal.open{display:block}
+.modal-overlay{position:absolute; inset:0; background:rgba(0,0,0,.45)}
+.modal-card{
+  position:relative;
+  max-width:900px;
+  width:calc(100% - 28px);
+  margin:18px auto;
+  background:#fff;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 18px 50px rgba(0,0,0,.25);
+  border:1px solid rgba(229,231,235,.9);
+}
+.modal-card img{width:100%; height:320px; object-fit:cover; display:block}
+.modal-body{padding:16px}
+.modal-body h2{margin:0 0 8px; color:var(--brandDark)}
+.modal-body h3{margin:12px 0 6px; color:var(--accent)}
+.chips{display:flex; gap:8px; flex-wrap:wrap}
+.icon-btn{
+  position:absolute; top:12px; right:12px;
+  border:none; cursor:pointer;
+  width:40px; height:40px; border-radius:14px;
+  background:rgba(255,255,255,.9);
+  border:1px solid rgba(229,231,235,.9);
+  font-weight:1000;
+}
+.icon-btn:hover{background:#fff}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="#home" onclick="navigate('home'); return false;">🍽️ Türk Lezzetleri</a>
+    <nav class="nav">
+      <a id="navHome" class="active" href="#home" onclick="navigate('home'); return false;">Ana Sayfa</a>
+      <a id="navRecipes" href="#recipes" onclick="navigate('recipes'); return false;">Tarifler</a>
+      <a id="navContact" href="#contact" onclick="navigate('contact'); return false;">İletişim</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- 1) ANA SAYFA -->
+  <section id="viewHome" class="view active">
+    <div class="hero">
+      <div class="hero-card">
+        <h1>Modern tasarımla Türk mutfağı</h1>
+        <p>Tarifleri keşfet, kartlara tıklayıp detayları görüntüle.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#recipes" onclick="navigate('recipes'); return false;">Tariflere Git</a>
+          <a class="btn btn-ghost" href="#contact" onclick="navigate('contact'); return false;">İletişime Geçin</a>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="num" id="statCount">0</div>
+          <div class="label">Toplam Tarif</div>
+        </div>
+        <div class="stat">
+          <div class="num">⏱️</div>
+          <div class="label">Süre Bilgisi</div>
+        </div>
+        <div class="stat">
+          <div class="num">⭐</div>
+          <div class="label">Zorluk Seviyesi</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Öne Çıkan Lezzetler</h2>
+        <p>Kartlara tıklayarak detaylı yapılışı görüntüleyin.</p>
+      </div>
+      <div class="grid" id="homeGrid"></div>
+    </section>
+  </section>
+
+  <!-- 2) TARİFLER -->
+  <section id="viewRecipes" class="view">
+    <section class="section">
+      <div class="section-head">
+        <h1>Tarifler</h1>
+        <p>Arama + zorluk filtresi ile tarifleri listeleyin.</p>
+      </div>
+
+      <div class="controls">
+        <input id="searchInput" class="input" placeholder="Tarif ara (örn: mantı, menemen)" />
+        <select id="difficultySelect" class="select">
+          <option value="all">Tüm zorluklar</option>
+          <option value="Kolay">Kolay</option>
+          <option value="Orta">Orta</option>
+          <option value="Zor">Zor</option>
+        </select>
+      </div>
+
+      <p class="small-note" id="resultInfo"></p>
+      <div class="grid" id="recipesGrid"></div>
+    </section>
+  </section>
+
+  <!-- 3) İLETİŞİM (eski Hakkımızda yerine) -->
+  <section id="viewContact" class="view">
+    <section class="section contact">
+      <div class="section-head">
+        <h1>İletişim</h1>
+        <p>Tuzla / İstanbul • Sosyal medya ve konum bilgisi</p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h3>İletişim Bilgileri</h3>
+          <p><b>E-posta:</b> info@turklezzetleri.com</p>
+          <p><b>Telefon:</b> +90 5xx xxx xx xx</p>
+          <p class="muted"><b>Adres:</b> Tuzla, İstanbul, Türkiye</p>
+
+          <hr class="sep" />
+
+          <h3>Sosyal Medya</h3>
+          <div class="social">
+            <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener">TikTok</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener">YouTube</a>
+            <a href="https://x.com" target="_blank" rel="noopener">X</a>
+          </div>
+        </div>
+
+        <iframe
+          class="map"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Tuzla%20%C4%B0stanbul&output=embed">
+        </iframe>
+      </div>
+    </section>
+  </section>
+
+</main>
+
+<!-- MODAL (tarif detayı) -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-overlay" onclick="closeModal()"></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-label="Tarif detayı">
+    <button class="icon-btn" onclick="closeModal()" aria-label="Kapat">✕</button>
+    <img id="detailImg" alt="" />
+    <div class="modal-body">
+      <h2 id="detailTitle"></h2>
+      <div class="chips" id="detailChips"></div>
+      <h3>Detaylı Yapılışı</h3>
+      <p id="detailText" class="preline"></p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <span>Hakları saklıdır.</span>
+    <span class="muted">© 2026 Türk Lezzetleri</span>
+  </div>
+</footer>
+
+<script>
+const foods = [
+  {
+    name:"Adana Kebap",
+    img:"kebab.jpg",
+    meta:{ sure:"35 dk", zorluk:"Orta", bolge:"Adana" },
+    desc:"Şişte, baharatlı ve köz tadıyla klasik ızgara lezzeti.",
+    text:
+`1) Kıyma Seçimi:
+Orta yağlı (%20 yağlı) dana veya kuzu kıyma kullanın.
+
+2) Yoğurma:
+Kıyma, pul biber, tuz ve çok az karabiberle en az 10 dakika yoğrulur.
+
+3) Dinlendirme:
+Harcı streçle kapatıp buzdolabında 20-30 dakika dinlendirin.
+
+4) Şekil Verme:
+Kıyma şişlere bastırılarak uzun ve ince şekilde yerleştirilir.
+
+5) Pişirme:
+Izgarada veya döküm tavada orta-yüksek ateşte çevrilerek pişirilir.
+
+6) Servis:
+Lavaş, sumaklı soğan ve közlenmiş biberle sıcak servis edilir.`
+  },
+  {
+    name:"Lahmacun",
+    img:"lahmacun.jpeg",
+    meta:{ sure:"25 dk", zorluk:"Kolay", bolge:"Güneydoğu" },
+    desc:"İncecik hamur, bol harç; limon ve maydanozla efsane.",
+    text:
+`1) Harç Hazırlığı:
+Kıyma, soğan, domates, biber, salça ve baharatlar karıştırılır.
+
+2) Hamur:
+Un, su ve tuz ile yumuşak bir hamur yoğrulur, 15 dk dinlendirilir.
+
+3) Açma:
+Hamur bezelere ayrılıp çok ince açılır.
+
+4) Harcı Yayma:
+Harcı hamurun üzerine ince tabaka halinde yayılır.
+
+5) Pişirme:
+250°C fırında 6-10 dakika pişirilir.
+
+6) Servis:
+Maydanoz, limon ve isteğe göre nar ekşisi ile servis edilir.`
+  },
+  {
+    name:"Mantı",
+    img:"manti.jpg",
+    meta:{ sure:"60 dk", zorluk:"Zor", bolge:"Kayseri" },
+    desc:"Minik mantılar; sarımsaklı yoğurt ve tereyağlı sosla şahane.",
+    text:
+`1) Hamur:
+Un, su ve tuz ile sert bir hamur yoğrulur, 20 dakika dinlendirilir.
+
+2) Açma:
+Hamur çok ince açılır ve küçük kareler halinde kesilir.
+
+3) İç Harç:
+Kıyma, rendelenmiş soğan, tuz ve karabiber karıştırılır.
+
+4) Kapatma:
+Her kareye az iç konur ve bohça şeklinde kapatılır.
+
+5) Haşlama:
+Kaynar tuzlu suda mantılar üste çıkana kadar haşlanır (8-12 dk).
+
+6) Servis:
+Sarımsaklı yoğurt ve tereyağında yakılmış pul biber sosu ile servis edilir.`
+  },
+  {
+    name:"Menemen",
+    img:"menemen.jpeg",
+    meta:{ sure:"15 dk", zorluk:"Kolay", bolge:"Ege" },
+    desc:"Kahvaltının yıldızı: domates, biber, yumurta üçlüsü.",
+    text:
+`1) Biber:
+Zeytinyağı tavada ısıtılır, biberler kavrulur.
+
+2) Domates:
+Domates eklenip suyunu çekene kadar pişirilir.
+
+3) Baharat:
+Tuz ve isteğe göre pul biber eklenir.
+
+4) Yumurta:
+Yumurtalar kırılır, isteğe göre karıştırılır.
+
+5) Servis:
+Sıcak olarak ekmekle servis edilir.`
+  }
+];
+
+const el = (id)=>document.getElementById(id);
+
+const views = {
+  home: el("viewHome"),
+  recipes: el("viewRecipes"),
+  contact: el("viewContact"),
+};
+const navs = {
+  home: el("navHome"),
+  recipes: el("navRecipes"),
+  contact: el("navContact"),
+};
+
+function navigate(page){
+  Object.keys(views).forEach(k=>{
+    views[k].classList.toggle("active", k===page);
+    navs[k].classList.toggle("active", k===page);
+  });
+  window.scrollTo({top:0, behavior:"smooth"});
+  if(page==="recipes"){ renderRecipes(); }
+  history.replaceState(null, "", "#"+page);
+}
+
+function cardHTML(f, i){
+  return `
+  <div class="card" onclick="openModal(${i})" role="button" aria-label="${f.name} detayı">
+    <img src="${f.img}" alt="${f.name}">
+    <div class="card-body">
+      <h3 class="card-title">${f.name}</h3>
+      <div class="card-meta">
+        <span class="badge">⏱️ ${f.meta.sure}</span>
+        <span class="badge">⭐ ${f.meta.zorluk}</span>
+        <span class="badge">📍 ${f.meta.bolge}</span>
+      </div>
+      <div class="card-desc">${f.desc}</div>
+    </div>
+  </div>`;
+}
+
+function renderHome(){
+  el("homeGrid").innerHTML = foods.map(cardHTML).join("");
+  el("statCount").innerText = foods.length;
+}
+
+function renderRecipes(){
+  const q = (el("searchInput").value || "").toLowerCase().trim();
+  const diff = el("difficultySelect").value;
+
+  const filtered = foods.filter(f=>{
+    const okName =
+      f.name.toLowerCase().includes(q) ||
+      f.desc.toLowerCase().includes(q) ||
+      f.meta.bolge.toLowerCase().includes(q);
+    const okDiff = (diff==="all") ? true : (f.meta.zorluk===diff);
+    return okName && okDiff;
+  });
+
+  el("recipesGrid").innerHTML = filtered.map((f)=>{
+    const idx = foods.findIndex(x=>x.name===f.name);
+    return cardHTML(f, idx);
+  }).join("");
+
+  el("resultInfo").innerText = `Gösterilen: ${filtered.length} / ${foods.length}`;
+}
+
+const modal = el("modal");
+function openModal(i){
+  const f = foods[i];
+  el("detailImg").src = f.img;
+  el("detailImg").alt = f.name;
+  el("detailTitle").innerText = f.name;
+  el("detailText").innerText = f.text;
+
+  el("detailChips").innerHTML = `
+    <span class="badge">⏱️ ${f.meta.sure}</span>
+    <span class="badge">⭐ ${f.meta.zorluk}</span>
+    <span class="badge">📍 ${f.meta.bolge}</span>
+  `;
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden","false");
+}
+function closeModal(){
+  modal.classList.remove("open");
+  modal.setAttribute("aria-hidden","true");
+}
+document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closeModal(); });
+
+el("searchInput").addEventListener("input", renderRecipes);
+el("difficultySelect").addEventListener("change", renderRecipes);
+
+function initFromHash(){
+  const page = (location.hash || "#home").replace("#","");
+  if(views[page]) navigate(page); else navigate("home");
+}
+
+renderHome();
+initFromHash();
+window.addEventListener("hashchange", initFromHash);
+</script>
+
+</body>
+</html>
